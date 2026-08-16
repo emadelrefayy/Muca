@@ -3,8 +3,9 @@
 Status legend used inline: ✅ Done · 🔶 Partial · ⬜ Not started. These reflect the assessment in `PROJECT_STATUS.md`; re-verify against the live repo/DB before trusting a ✅ blindly.
 
 ## Phase 0 — Foundation
+- ⬜ **Migrate the codebase from JS/JSX to TypeScript/TSX** — complete before feature work; configure `tsconfig.json` and convert all frontend files.
 - ⬜ **Delete the `backend/` folder (unused FastAPI skeleton)** — the project runs as a Vercel-hosted frontend talking directly to Supabase Cloud, with no custom backend server. Not a decision to defer.
-- ✅ React + Vite confirmed. **Locked: stays JavaScript/JSX for the MVP — no TypeScript migration mid-build** (see `AGENTS.md` Section 3).
+- ✅ React + Vite confirmed. **Locked: TypeScript/TSX for the entire MVP. No JavaScript/JSX files.**
 - ✅ Tailwind CSS.
 - 🔶 shadcn/ui — adopt for every new component going forward (locked decision); leave working custom components as-is, don't force a rewrite of things that already work.
 - ✅ Supabase project created and connected.
@@ -91,13 +92,19 @@ Status legend used inline: ✅ Done · 🔶 Partial · ⬜ Not started. These re
 - ⬜ Template isolation tests.
 - ⬜ Result-immutability tests.
 - ⬜ Audit log tests.
-- ⬜ E2E workflow tests (Playwright).
+- ⬜ **E2E workflow tests (Playwright) — REQUIRED MVP.**
 - ⬜ Accessibility and responsive UI checks.
 
-## Phase 12 — Future
-- ⬜ WhatsApp integration via n8n.
-- ⬜ Supabase Edge Functions, added only as concrete server-side needs arise.
-- ⬜ Advanced lab-device integrations.
+## MVP Cross-Cutting Requirements
+- ⬜ **Supabase Edge Functions — REQUIRED MVP.** Implement server-side logic that must not run in the browser.
+- ⬜ **Webhook capability — REQUIRED MVP.** Implement webhook handling through Supabase Edge Functions.
+- ⬜ **Playwright E2E — REQUIRED MVP.** Cover the defined critical end-to-end workflows.
+- **Unit tests — OUT OF MVP.** Do not implement Vitest/React Testing Library unit/component test suites in the MVP.
+- **Advanced laboratory-device integrations — OUT OF MVP.** Do not implement direct integrations with laboratory analyzers/devices.
+
+## Post-MVP
+- ⬜ **GitHub Actions CI/CD.** Implement after MVP completion; this is the first post-MVP deployment automation task.
+- ⬜ **WhatsApp integration via n8n.** Not part of the MVP build.
 
 ---
 **Implementation rule (unchanged from the Master Brief):** do not re-litigate decided business rules. If something conflicts, resolve in this order: (1) `BRD.md` decisions, (2) current project files/`PROJECT_STATUS.md` for what actually exists, (3) the current code itself, (4) new assumptions — clearly labeled TBD.

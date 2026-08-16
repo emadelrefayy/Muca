@@ -10,7 +10,7 @@ See `BRD.md` for full business requirements. In short:
 
 - Multi-tenant lab management SaaS (tenant = `lab_id`).
 - Roles: Super Admin, Lab Manager, Receptionist, Lab Technician, Validator (optional).
-- Core flow: Receptionist creates a customer + order (one or more tests) → cash payment → Technician enters results → optional Validator approval → results delivered/printed, later via WhatsApp integration.
+- Core flow: Receptionist creates a customer + order (one or more tests) → cash payment → Technician enters results → optional Validator approval → results delivered/printed.
 - Central template library (master templates, versioned) that labs copy and customize.
 - Bilingual app UI (Arabic/English, RTL/LTR, dark/light); medical reports are English-only regardless of app language.
 
@@ -24,7 +24,7 @@ See `BRD.md` for full business requirements. In short:
 - **Auth:** Supabase Auth is configured on the project side, but the frontend does not yet call it — sign-in/sign-up UI is not wired.
 - **Frontend integration:** Not done. Clients/Services/Staff/Orders/Payments/Results pages exist as placeholders/mock-data pages only.
 
-See `ARCHITECTURE.md` for the full target architecture, including pieces not yet built (Edge Functions, template versioning tables, audit log, WhatsApp/n8n integration).
+See `ARCHITECTURE.md` for the full target architecture, including MVP pieces not yet built (Supabase Edge Functions, webhook capability, template versioning tables, audit log) and explicitly excluded integrations.
 
 ## Development Setup
 
@@ -61,10 +61,19 @@ There is no seed data yet, and the frontend does not yet call Supabase Auth. Onc
 
 Only the Supabase cloud project (schema, RLS) is real infrastructure today. The frontend is still at mock-data-only stage with a placeholder page set (Clients/Services/Staff/Orders/Payments/Results) and an unused FastAPI skeleton. All Supabase wiring (auth, real CRUD, live dashboard data) needs to be built — this was attempted once but that code was never merged into this repo and its whereabouts are unconfirmed. Business-rule enforcement described in `BRD.md` (order/test lifecycle, shift-based cash accounting, template versioning, validation workflow, subscription/plan management, Super Admin dashboard, audit logging) is **decided but not yet implemented** — see `PROJECT_STATUS.md`.
 
-## Future Integrations
+## MVP Technical Requirements
 
-- WhatsApp result delivery via an n8n-hosted hook (Reception Dashboard → hook → n8n → WhatsApp → customer). Not part of the MVP.
-- Supabase Edge Functions for any server-side logic that must not run in the browser (webhooks, WhatsApp integration, secrets, background jobs) — added only when needed.
+- **Supabase Edge Functions:** REQUIRED in the MVP.
+- **Webhook capability:** REQUIRED in the MVP and implemented through Supabase Edge Functions.
+- **Playwright E2E:** REQUIRED in the MVP for critical end-to-end workflows.
+- **Unit tests (Vitest/React Testing Library):** OUT OF MVP.
+- **Direct laboratory-device integrations:** OUT OF MVP.
+
+## Post-MVP
+
+- **GitHub Actions CI/CD:** POST-MVP; not implemented during the MVP build.
+- **WhatsApp integration via n8n:** OUT OF MVP.
+
 
 ## Deployment
 
@@ -72,4 +81,4 @@ Only the Supabase cloud project (schema, RLS) is real infrastructure today. The 
 GitHub → Vercel → React/Vite frontend → Supabase Cloud (Auth, PostgreSQL, RLS, Storage)
 ```
 
-CI/CD pipeline details TBD.
+GitHub Actions CI/CD is POST-MVP and is not implemented during the MVP build.

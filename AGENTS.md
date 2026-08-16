@@ -30,7 +30,7 @@ Do not re-ask questions that are already settled in `BRD.md` or `PROJECT_STATUS.
 
 These remove every either/or left open in earlier drafts of the docs. Follow them exactly; do not substitute an equivalent alternative.
 
-- **Language: JavaScript (JSX), not TypeScript, for the entire MVP build.** Do not start a TypeScript migration, do not write new files in `.tsx`/`.ts`, do not mix the two. TypeScript migration is Future work, after the MVP ships — not something to do "along the way."
+- **Language: TypeScript/TSX for the entire MVP build.** Do not write new JavaScript/JSX files. Migrate the existing JS/JSX codebase to TypeScript/TSX before feature work begins and use TypeScript/TSX for all frontend code.
 - **UI components: shadcn/ui + Radix UI + Tailwind CSS, for every new component.** Do not build a parallel set of custom/hand-rolled components for things shadcn/ui already provides (buttons, dialogs, inputs, tables, etc). If an existing custom component already does the job, leave it — but any *new* UI work uses shadcn/ui.
 - **Routing: React Router (`react-router-dom`).** If it's already in the repo, use it as-is. If it isn't installed yet, add `react-router-dom` — do not introduce any other routing library.
 - **Data fetching/mutations: TanStack Query wrapping the Supabase JS client, for every page.** Do not call `supabase-js` directly from inside components and do not mix raw `useEffect`+`fetch` patterns with TanStack Query in the same codebase. One pattern, everywhere.
@@ -38,6 +38,12 @@ These remove every either/or left open in earlier drafts of the docs. Follow the
 - **`payments.method`: restrict the DB check constraint to `'cash'` only**, as part of the Phase 2 migration. Do not leave `card`/`bank_transfer` in the constraint "for later" — cash-only is real security enforced at the database, consistent with the project's stated principle that the frontend is not a trust boundary. If card/bank_transfer payment methods are ever needed post-MVP, that's a future migration, decided at that time.
 - **`subscription_plans`: keep the current fixed columns** (`max_staff`, `max_clients`, `max_orders`, `price`, `duration_days`) for the MVP. Do not migrate to a dynamic/JSONB limits model now. BRD Section 22's "fully dynamic Plans" is explicitly deferred to Future/post-MVP — treat the fixed-column model as the correct MVP implementation, not a stopgap to second-guess.
 - **`backend/` folder: delete it.** No custom backend server exists in this project. Do not repurpose it, do not keep it "just in case."
+- **Supabase Edge Functions: REQUIRED in the MVP.** Use Supabase Edge Functions for server-side logic that must not run in the browser, including the MVP webhook capability. Do not create a separate custom backend server.
+- **Webhook capability: REQUIRED in the MVP.** Implement the webhook capability through Supabase Edge Functions.
+- **E2E testing: REQUIRED in the MVP.** Use Playwright for end-to-end testing of the defined critical user flows.
+- **Unit tests: OUT OF MVP.** Do not implement Vitest/React Testing Library unit or component test suites in the current MVP build.
+- **Advanced laboratory-device integrations: OUT OF MVP.** Do not implement direct integrations with laboratory analyzers/devices in the current project scope.
+- **CI/CD: POST-MVP.** Do not implement GitHub Actions CI/CD during the MVP build. It is the first post-MVP deployment automation task.
 
 ## 4. Required migrations before feature work (do these first, in this order)
 

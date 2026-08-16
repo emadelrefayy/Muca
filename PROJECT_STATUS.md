@@ -26,7 +26,7 @@ Everything in `BRD.md`, including but not limited to:
 - Upgrade/downgrade request-then-approve workflow.
 - Expiration → grace period → inactive → controlled data-fate decision.
 - Audit log scoped to sensitive operations only (not routine views).
-- Future WhatsApp delivery via n8n hook — explicitly out of MVP scope, design-only.
+- WhatsApp delivery via n8n is OUT OF MVP scope.
 
 ## Planned (next up per TASKS.md, not yet built)
 
@@ -41,16 +41,23 @@ Everything in `BRD.md`, including but not limited to:
 - Template library (master + versioning + lab copies + custom templates).
 - English-only medical report generation and print configuration.
 - Super Admin dashboard, lab/plan/subscription management, Support Access.
-- Test suite (Vitest, React Testing Library, Playwright) — none exists yet.
-- TypeScript migration (current code is JS/JSX; target stack specifies TypeScript).
+- Playwright E2E test suite — REQUIRED MVP; none exists yet.
+- TypeScript migration — REQUIRED MVP; current code is JS/JSX and must be migrated before feature work.
+- Vitest/React Testing Library unit/component tests — OUT OF MVP.
 - **Delete the unused `backend/` (FastAPI skeleton) folder** — the project ships as Vercel frontend + Supabase Cloud only, with no custom backend server. Decided, not deferred.
 
-## Future (explicitly deferred, out of current build scope)
+## MVP Scope Decisions
 
-- WhatsApp integration via n8n.
-- Supabase Edge Functions (added only when a concrete server-side need arises).
-- Advanced lab-device integrations.
-- Online/gateway payments, partial payment, debt, installments.
+- Supabase Edge Functions — REQUIRED MVP.
+- Webhook capability through Supabase Edge Functions — REQUIRED MVP.
+- Playwright E2E testing — REQUIRED MVP.
+- Vitest/React Testing Library unit/component tests — OUT OF MVP.
+- Direct laboratory-device integrations — OUT OF MVP.
+- WhatsApp integration via n8n — OUT OF MVP.
+
+## Post-MVP
+
+- GitHub Actions CI/CD — POST-MVP; implement after MVP completion.
 
 ## Confirmed via live schema inspection (`grcobobbhrqjanarptln`, public schema)
 

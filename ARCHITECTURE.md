@@ -4,11 +4,11 @@ This describes the **target** architecture. Items not yet built are marked accor
 
 ## Stack
 
-**Locked for this MVP (see `AGENTS.md` Section 3 for the full non-negotiable list):** React, **JavaScript/JSX (not TypeScript — deferred to post-MVP)**, Vite, Tailwind CSS, shadcn/ui, Radix UI, Lucide React, React Hook Form, Zod, TanStack Query, i18next / react-i18next, Recharts, date-fns.
+**Locked for this MVP:** React, **TypeScript/TSX**, Vite, Tailwind CSS, shadcn/ui, Radix UI, Lucide React, React Hook Form, Zod, TanStack Query, i18next / react-i18next, Recharts, date-fns.
 
-**Testing (planned, not yet in place):** Vitest, React Testing Library, Playwright (E2E, later).
+**Testing:** Playwright E2E is REQUIRED in the MVP. Vitest and React Testing Library unit/component tests are OUT OF MVP.
 
-**Backend / Cloud:** No traditional backend server. Supabase Cloud provides Auth, PostgreSQL, Row Level Security, and Storage — **the Supabase project itself is live and confirmed**, but the frontend does not yet call it (see note below). Supabase Edge Functions are added later, only when server-side logic is genuinely required (webhooks, WhatsApp integration, secrets, background jobs, or anything that must not run in the browser).
+**Backend / Cloud:** No traditional backend server. Supabase Cloud provides Auth, PostgreSQL, Row Level Security, and Storage — **the Supabase project itself is live and confirmed**, but the frontend does not yet call it (see note below). Supabase Edge Functions are REQUIRED in the MVP for server-side logic that must not run in the browser, including the MVP webhook capability, secret-dependent logic, and background jobs that are implemented in the MVP.
 
 **⚠️ Current gap:** the frontend in this repo is still mock-data-only. A prior attempt to wire it to Supabase (auth, CRUD, live data) was never merged into this repo and its whereabouts are unconfirmed — treat it as not existing. The repo also still contains a `backend/` folder (unused FastAPI skeleton) which is scheduled for deletion in Phase 0 — the project ships as Vercel-hosted frontend + Supabase Cloud only, with no custom backend server.
 
@@ -23,7 +23,7 @@ GitHub → Vercel → React/TypeScript frontend → Supabase Cloud
 
 ## Frontend Architecture
 
-- Vite-based React SPA, JavaScript/JSX (this is the locked choice for the MVP, not a gap to close — see `AGENTS.md`).
+- Vite-based React SPA, TypeScript/TSX (this is the locked choice for the MVP — see `AGENTS.md`).
 - Component structure (current): `Header`, `Sidebar`, `Dashboard`, `StatCard`, `StatusBadge`, `RevenueChart`, `Logo`, `PlaceholderPage`, plus placeholder CRUD pages for Clients, Services, Staff, Orders, Payments, Results (mock data only — not yet wired to Supabase).
 - i18n via a translations module (current) / i18next (target) — bilingual AR/EN with RTL/LTR layout switching, and dark/light theme toggle, present on every page.
 - Data fetching: **TanStack Query wrapping the Supabase JS client, for every page** — one pattern throughout, not mixed with raw `useEffect`+`fetch`.
@@ -81,16 +81,23 @@ Arabic/English toggle with RTL/LTR layout switching is implemented in the curren
 
 ## Testing
 
-Not yet set up. Target: Vitest + React Testing Library for unit/component tests, Playwright for E2E once core flows stabilize.
+- Playwright E2E is REQUIRED in the MVP and must cover the defined critical end-to-end workflows.
+- Vitest and React Testing Library unit/component test suites are OUT OF MVP and are not implemented in the current MVP build.
 
 ## Deployment
 
-GitHub → Vercel (frontend) → Supabase Cloud (backend-as-a-service). CI/CD pipeline configuration TBD.
+GitHub → Vercel (frontend) → Supabase Cloud (backend-as-a-service). GitHub Actions CI/CD is POST-MVP and is not implemented during the MVP build.
 
-## Future: Edge Functions
+## MVP: Edge Functions and Webhooks
 
-Reserved for logic that must not run client-side: WhatsApp/n8n webhook handling, background jobs, secret-dependent integrations. None exist yet — the MVP is deliberately frontend-first + Supabase backend-as-a-service, with real security enforced via Auth + RLS + Storage policies, not by hiding buttons in the UI.
+Supabase Edge Functions are REQUIRED in the MVP. The MVP includes webhook capability implemented through Supabase Edge Functions. No separate custom backend server is introduced.
 
-## Future: TypeScript Migration
+## Scope Exclusions
 
-Deferred until after the MVP ships. Do not begin it mid-build — see `AGENTS.md` Section 3.
+- Unit/component test suites using Vitest and React Testing Library are OUT OF MVP.
+- Direct integrations with laboratory analyzers/devices are OUT OF MVP.
+
+## Post-MVP
+
+- GitHub Actions CI/CD is the first post-MVP deployment automation task.
+- WhatsApp integration via n8n is OUT OF MVP and is not implemented in the current MVP build.
